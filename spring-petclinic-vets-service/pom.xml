@@ -5,15 +5,15 @@
 
 	<groupId>org.springframework.samples.petclinic.vets</groupId>
 	<artifactId>spring-petclinic-vets-service</artifactId>
-		<version>3.2.12</version>
-		<packaging>jar</packaging>
+	<version>3.2.12</version>
+	<packaging>jar</packaging>
 	<description>Spring PetClinic Vets Service</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-				<version>3.2.12</version>
-				<relativePath/>
+		<version>3.2.12</version>
+		<relativePath/>
 	</parent>
 
     <properties>
