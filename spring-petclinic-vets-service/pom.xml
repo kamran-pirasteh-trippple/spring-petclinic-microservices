@@ -22,8 +22,12 @@
         <chaos-monkey-spring-boot.version>3.1.0</chaos-monkey-spring-boot.version>
         <jolokia-core.version>1.7.1</jolokia-core.version>
         <datasource-micrometer.version>2.0.1</datasource-micrometer.version>
+        <docker.image.prefix>springcommunity</docker.image.prefix>
         <docker.image.exposed.port>8081</docker.image.exposed.port>
         <docker.image.dockerfile.dir>${basedir}/../docker</docker.image.dockerfile.dir>
+        <container.executable>docker</container.executable>
+        <container.platform>linux/amd64</container.platform>
+        <container.build.extraarg>--load</container.build.extraarg>
     </properties>
 
     <dependencyManagement>
@@ -186,6 +190,35 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.1.1</version>
+                        <executions>
+                            <execution>
+                                <id>docker-build</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${container.executable}</executable>
+                                    <workingDirectory>${docker.image.dockerfile.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>build</argument>
+                                        <argument>-f</argument>
+                                        <argument>Dockerfile</argument>
+                                        <argument>--build-arg</argument>
+                                        <argument>ARTIFACT_NAME=${project.build.finalName}</argument>
+                                        <argument>--build-arg</argument>
+                                        <argument>EXPOSED_PORT=${docker.image.exposed.port}</argument>
+                                        <argument>--platform</argument>
+                                        <argument>${container.platform}</argument>
+                                        <argument>${container.build.extraarg}</argument>
+                                        <argument>-t</argument>
+                                        <argument>${docker.image.prefix}/${project.artifactId}</argument>
+                                        <argument>${project.build.directory}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
